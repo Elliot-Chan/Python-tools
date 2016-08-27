@@ -9,12 +9,33 @@ def is_chinese(char):
     else:
         return False
 
+def is_alpha(char):
+    if (char >= u'\u0041' and char<=u'\u005a') or (char >= u'\u0061' and char<=u'\u007a'):
+        return True
+    else:
+        return False
+
+def is_digit(char):
+    if char >= u'\u0030' and char<=u'\u0039':
+        return True
+    else:
+        return False
+
+def phrase(keyword):
+    return keyword == "+"
+
 if __name__ == "__main__":
+    need_phrase= phrase(sys.argv[-1]) 
     for word in sys.argv[1:]:
-        print(word)
-        if is_chinese(word):
-            print('')
-            print("Chinese to English is not avaliable now!")
-            print('')
-            continue
-        el_youdao.get_base_result(word)
+        if word != sys.argv[-1] or not need_phrase:
+            print(word)
+            if not is_alpha(word) and not is_digit(word):
+                print("Only support en-cn now!")
+                if is_chinese(word):
+                    print('')
+                    print("Chinese to English is not avaliable now!")
+                    print('')
+                continue
+            else:
+                el_youdao.get_base_result(word, need_phrase)
+                print("*********************************************")
