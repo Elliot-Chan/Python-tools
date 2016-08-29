@@ -44,7 +44,7 @@ def get_base_result(keyword, need_phrase):
         if not has_addition:
             if need_phrase:
                 get_web_result()
-            return 
+            return
         addition = str(has_addition.contents[0]).strip('[').strip(']').replace(' ', '')
         count = 0
         for each in addition.split('\n'):
@@ -65,10 +65,14 @@ def get_base_result(keyword, need_phrase):
 def deal_error_result(result, keyword):
     print("%s Not found word: %s\x1B[0m" % (red_color, keyword))
     print("Maybe you want to query follow words ")
+    print(" ",result.find_all(class_="keyword")[0].contents[0])
+    r = result.find_all(class_="trans-container")[0].find_all("li")
+    for each in r:
+        print("  ",each.contents[0])
     for rel in result.findAll(class_="typo-rel"):
         print("  ", end='')
-        print(str(rel.contents[1].a.contents[0]), end=' ')
-        print((str(rel.contents[2]).replace("\n", '').replace(" ",'')))
+        print(str(rel.contents[1].a.contents[0]))
+        print("  ", (str(rel.contents[2]).replace("\n", '').replace(" ",'')))
 
 
 if __name__ == "__main__":
