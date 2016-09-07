@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding=utf-8
 import sys
-import el_youdao
-
+import youdao
+import os
 
 def is_chinese(char):
     return char >= u'\u4e00' and char <= u'\u9fa5'
@@ -17,17 +17,25 @@ def phrase(keyword):
     return keyword == "+"
 
 if __name__ == "__main__":
-    need_phrase= phrase(sys.argv[-1])
-    for word in sys.argv[1:]:
-        if word != sys.argv[-1] or not need_phrase:
-            print(word)
-            if not is_alpha(word) and not is_digit(word):
-                print("Only support en-cn now!")
-                if is_chinese(word):
-                    print('')
-                    print("Chinese to English is not avaliable now!")
-                    print('')
-                continue
-            else:
-                el_youdao.get_base_result(word, need_phrase)
-                print("*********************************************")
+    default_dir = "/home/Elliot/Python-tools/Translate/"
+    if not os.path.exists(default_dir + "words"):
+        os.makedirs(default_dir + "words")
+    word = sys.argv[1]
+    if len(sys.argv) == 3:
+        if sys.argv[2] == "r":
+            youdao.tr(default_dir, word, True)
+        else:
+            print("Only support "r" options now")
+    else:
+        try:
+            with open(default_dir+"words/"+word+".time","r") as f:
+                times = f.read()
+                f.close()
+        except FileNotFoundError:
+            times = '0'
+        finally:
+            pass
+        with open(default_dir+"words/"+word+".time","w") as f:
+            times = str(int(times) + 1)
+            f.write(times)
+        youdao.tr(default_dir, word, False)

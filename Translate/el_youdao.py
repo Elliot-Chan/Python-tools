@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 red_color = "\x1B[%d;%d;%dm" %(7, 30 ,41)
 url = "http://dict.youdao.com/w/"
-
+result = BeautifulSoup('','html.parser').find("hello")
 def encode_word(word):
     return urllib.parse.quote(word)
 
